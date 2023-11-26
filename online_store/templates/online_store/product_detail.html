@@ -1,0 +1,21 @@
+{% extends 'online_store/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="card mb-4 shadow-sm">
+    <img class="card-img-top"
+         src="{{ product_id.image|mymedia }}"
+         width="1140" height="627"
+         alt="Card image cap"
+         sizes="(max-width: 940px) 100vw, 940px">
+    <div class="card-header text-center">
+        <h4 class="my-0 font-weight-normal">Описание товара</h4>
+    </div>
+    <div class="card-body">
+        <h1 class="card-title pricing-card-title">Стоимость - ${{ product_id.price }} <small class="text-muted"></small>
+        </h1>
+        <ul class="list-unstyled mt-3 mb-4">
+            <li>{{ product_id.description }}</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
