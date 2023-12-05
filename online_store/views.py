@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from online_store.models import Product, Contacts, CategoryProduct
-from .forms import ProductForm
+
 
 
 # Create your views here.
