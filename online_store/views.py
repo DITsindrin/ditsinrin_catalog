@@ -7,7 +7,6 @@ from django.views.generic import ListView, DetailView, CreateView
 from online_store.models import Product, Contacts, CategoryProduct
 
 
-
 # Create your views here.
 
 
@@ -63,9 +62,6 @@ class ProductCreateView(CreateView):
     model = Product
     fields = ('title', 'category', 'price', 'image')
     success_url = reverse_lazy('online_store:products')
-
-
-
 
 
 # FBV (function based views)
