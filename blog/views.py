@@ -51,7 +51,7 @@ class ArticleDetailView(DetailView):
 
 class ArticleCreateView(CreateView):
     model = Article
-    fields = ('title', 'content', 'preview', 'publication_sign',)
+    fields = ('title', 'content', 'category', 'preview', 'publication_sign',)
     success_url = reverse_lazy('blog:blogs')
 
     def form_valid(self, form):
@@ -65,7 +65,7 @@ class ArticleCreateView(CreateView):
 
 class ArticleUpdateView(UpdateView):
     model = Article
-    fields = ('title', 'content', 'preview', 'publication_sign',)
+    fields = ('title', 'content', 'category', 'preview', 'publication_sign',)
     # success_url = reverse_lazy('blog:blogs')
 
     def get_success_url(self):
