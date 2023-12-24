@@ -6,6 +6,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class CategoryProduct(models.Model):
+    """Модель категории продукта"""
     title = models.CharField(max_length=250, verbose_name='название категории')
     description = models.TextField(verbose_name='описание категории')
     parent_category = models.ForeignKey('self', on_delete=models.CASCADE, **NULLABLE,
@@ -22,6 +23,7 @@ class CategoryProduct(models.Model):
 
 
 class Product(models.Model):
+    """Модель продукта"""
     title = models.CharField(max_length=250, verbose_name='название продукта')
     description = models.TextField(verbose_name='описание продукта')
     image = models.ImageField(default='default.png', upload_to='product_img', **NULLABLE,
@@ -39,7 +41,23 @@ class Product(models.Model):
         verbose_name_plural = 'продукты'
 
 
+class ProductVersion(models.Model):
+    """Модель версии продукта"""
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, **NULLABLE, verbose_name='продукт')
+    version_number = models.IntegerField(verbose_name='номер версии')
+    version_name = models.CharField(max_length=150, verbose_name='наименование версии')
+    version_flag = models.BooleanField(default=False, verbose_name='признак текущей версиии')
+
+    def __str__(self):
+        return f'{self.version_name} {self.version_number} {self.version_flag} {self.product}'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+
+
 class Contacts(models.Model):
+    """Модель контактов"""
     country = models.CharField(max_length=100, verbose_name='страна')
     inn = models.CharField(max_length=50, verbose_name='ИНН')
     address = models.CharField(max_length=250, verbose_name='адресс')

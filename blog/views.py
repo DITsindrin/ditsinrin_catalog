@@ -19,8 +19,8 @@ class ArticleListView(ListView):
         context['title'] = 'OnlineStore NewS'
         return context
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
+    def get_queryset(self):
+        queryset = super().get_queryset()
         queryset = queryset.filter(publication_sign=True)
         return queryset
 
@@ -39,13 +39,13 @@ class ArticleDetailView(DetailView):
         self.object.save()
 
         if self.object.views_count == 100:
-            send_mail(
+            test = send_mail(
                 subject='Просмотры статьи',
                 message=f'Поздравляю! Просмотры статьи {self.object.title} достигли {self.object.views_count} просмотров!',
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=['dmitriytsindrin@mail.ru'],
+                recipient_list=['ditsindrin@yandex.ru'],
             )
-
+            print(test)
         return self.object
 
 
