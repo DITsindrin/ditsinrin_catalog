@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 class CategoryArticle(models.Model):
+    """Модель категории статьи"""
     title = models.CharField(max_length=250, verbose_name='название категории')
 
     def __str__(self):
@@ -14,6 +15,7 @@ class CategoryArticle(models.Model):
 
 
 class Article(models.Model):
+    """Модель статьи"""
     title = models.CharField(max_length=300, verbose_name='заголовок статьи')
     category = models.ForeignKey(CategoryArticle, on_delete=models.CASCADE, verbose_name='категория статьи')
     slug = models.CharField(max_length=200, verbose_name='slug')

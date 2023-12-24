@@ -10,6 +10,14 @@
             <h1 class="card-title pricing-card-title">${{ object.price }} <small class="text-muted"></small></h1>
             <ul class="list-unstyled mt-3 mb-4">
                 <li>{{ object.description|slice:'100' }}</li>
+
+                <li>
+                    {% if object == version.product %}
+                        Версия - {{ version.version_name }}
+                    {% else %}
+                        Версия не задана
+                    {% endif %}
+                </li>
             </ul>
             <a href="{% url 'online_store:product-detail' object.id %}" class="m-2">
                 <button type="button" class="btn btn-lg btn-block btn-outline-primary">Подробнее о товаре</button>

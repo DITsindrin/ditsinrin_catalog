@@ -16,6 +16,12 @@
         <ul class="list-unstyled mt-3 mb-4">
             <li>{{ object.description }}</li>
         </ul>
+        {% if user.is_authenticated %}
+            <a href="{% url 'online_store:product-edit' object.pk %}" type="button"
+               class="btn btn-lg btn-block btn-outline-primary">Изменить</a>
+            <a href="{% url 'online_store:product-delete' object.pk %}" type="button"
+               class="btn btn-lg btn-block btn-outline-danger">Удалить</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
