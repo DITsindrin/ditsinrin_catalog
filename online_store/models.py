@@ -1,6 +1,8 @@
 from __future__ import annotations
 from django.db import models
 
+from users.models import User
+
 # Create your models here.
 NULLABLE = {'blank': True, 'null': True}
 
@@ -32,6 +34,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена продукта')
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
     last_modified_date = models.DateTimeField(auto_now=True, verbose_name='дата обновления')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='пользователь')
 
     def __str__(self):
         return f'{self.title} {self.category} {self.price}'

@@ -5,9 +5,9 @@
         <div class="card">
             <div class="card-header">
                 {% if object %}
-                Изменение продукта
+                    Изменение продукта
                 {% else %}
-                Создание продукта
+                    Создание продукта
                 {% endif %}
             </div>
             <div class="card-body">
@@ -24,21 +24,20 @@
             <div class="card-body">
                 {{ formset.management_form }}
                 {% for form in formset.forms %}
-                {{ form.as_p }}
-                {% if not forloop.last %}
+                    {{ form.as_p }}
+                    {% if not forloop.last %}
                 <hr>
-                {% endif %}
+                    {% endif %}
                 {% endfor %}
             </div>
             <button type="submit" class="btn btn-outline-success">
                 {% if object %}
-                Изменить
+                    Изменить
                 {% else %}
-                Создать
+                    Создать
                 {% endif %}
             </button>
         </div>
     </div>
-
 </form>
 {% endblock %}

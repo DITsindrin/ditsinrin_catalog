@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'online_store',
     'blog',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,7 @@ EMAIL_USE_TLS = False
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # SERVER_EMAIL = EMAIL_HOST_USER
 # EMAIL_ADMIN = EMAIL_HOST_USER
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
