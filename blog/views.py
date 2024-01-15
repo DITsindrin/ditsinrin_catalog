@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -10,7 +11,7 @@ from blog.models import Article
 
 # Create your views here.
 
-class ArticleListView(ListView):
+class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
     paginate_by = 8
 
@@ -25,7 +26,7 @@ class ArticleListView(ListView):
         return queryset
 
 
-class ArticleDetailView(DetailView):
+class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
 
     def get_context_data(self, **kwargs) -> dict[str,]:
@@ -49,10 +50,11 @@ class ArticleDetailView(DetailView):
         return self.object
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Article
     fields = ('title', 'content', 'category', 'preview', 'publication_sign',)
     success_url = reverse_lazy('blog:blogs')
+    permission_required = 'blog.add_article'
 
     def form_valid(self, form):
         if form.is_valid():
@@ -63,15 +65,18 @@ class ArticleCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Article
     fields = ('title', 'content', 'category', 'preview', 'publication_sign',)
+    permission_required = 'blog.change_article'
+
     # success_url = reverse_lazy('blog:blogs')
 
     def get_success_url(self):
-        return reverse('blog:blogs', args=[self.kwargs.get('pk')])
+        return reverse('blog:blogs')
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy('blog:blogs')
+    permission_required = 'blog.delete_article'

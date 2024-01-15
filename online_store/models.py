@@ -34,6 +34,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена продукта')
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
     last_modified_date = models.DateTimeField(auto_now=True, verbose_name='дата обновления')
+    publication_sign = models.BooleanField(default=False, verbose_name='признак публикации')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='пользователь')
 
     def __str__(self):
