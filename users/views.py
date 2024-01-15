@@ -1,6 +1,8 @@
 import random
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
@@ -71,7 +73,7 @@ class ActivationFailed(TemplateView):
     template_name = 'users/email_verification_failed.html'
 
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     """Редактирование профиля пользователя"""
     model = User
     form_class = UserProfileForm
@@ -85,7 +87,7 @@ class ProfileView(UpdateView):
 #     """"""
 #     return render(request, 'users/password_recovery.html')
 
-
+@login_required
 def generate_new_password(request):
     """Отправка сгенерированного пароля для восстановления"""
     new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])

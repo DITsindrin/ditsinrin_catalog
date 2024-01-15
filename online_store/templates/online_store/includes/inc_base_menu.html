@@ -14,13 +14,17 @@
                 </ul>
                 <ul class="list-unstyled">
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'users:logout' %}" class="text-white">Выйти</a></li>
-                        <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>
-                        <li><a href="{% url 'online_store:product-create' %}" class="text-white">Создать продукт</a></li>
-                        <li><a href="{% url 'blog:blog-create' %}" class="text-white">Создать статью</a></li>
+                    <li><a href="{% url 'users:logout' %}" class="text-white">Выйти</a></li>
+                    <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>
+                    {% if perms.online_store.add_product %}
+                    <li><a href="{% url 'online_store:product-create' %}" class="text-white">Создать продукт</a></li>
+                    {% endif %}
+                    {% if perms.blog.add_article %}
+                    <li><a href="{% url 'blog:blog-create' %}" class="text-white">Создать статью</a></li>
+                    {% endif %}
                     {% else %}
-                        <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
-                        <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
+                    <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
+                    <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
                     {% endif %}
 
                 </ul>

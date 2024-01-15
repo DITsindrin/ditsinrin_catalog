@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.paginator import Paginator
 from django.forms import inlineformset_factory
 from django.http import Http404, HttpResponseRedirect
@@ -11,7 +13,7 @@ from online_store.models import Product, Contacts, CategoryProduct, ProductVersi
 
 # Create your views here.
 
-
+@login_required
 def home(request):
     """Контроллер главной страницы"""
     title = 'OnlineStore'
@@ -24,6 +26,7 @@ def home(request):
     return render(request, 'online_store/home.html', context)
 
 
+@login_required
 def contacts(request):
     """Контроллер страницы с контактами"""
     contact = Contacts.objects.all()
@@ -43,7 +46,7 @@ def contacts(request):
     return render(request, 'online_store/contacts.html', context)
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin, ListView):
     """Контроллер страницы со списком продуктов"""
     model = Product
     paginate_by = 4
@@ -60,7 +63,7 @@ class ProductListView(ListView):
         return context
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     """Контроллер страницы с детальной информацией о продукте"""
     model = Product
 
@@ -70,18 +73,19 @@ class ProductDetailView(DetailView):
         return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """Контроллер страницы создания продукта"""
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('online_store:products')
+    permission_required = 'online_store.add_product'
 
-    def form_valid(self, form):
-        self.object = form.save()
-        self.object.user = self.request.user
-        self.object.save()
-
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     self.object = form.save()
+    #     self.object.user = self.request.user
+    #     self.object.save()
+    #
+    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -102,14 +106,23 @@ class ProductCreateView(CreateView):
             formset.instance = self.object
             formset.save()
 
+        self.object.user = self.request.user
+        self.object.save()
+
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер страницы изменения продукта"""
     model = Product
     form_class = ProductUpdateForm
     success_url = reverse_lazy('online_store:products')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.user != self.request.user:
+            raise Http404
+        return self.object
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -133,10 +146,11 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin,  DeleteView):
     """Контроллер страницы удаления продукта"""
     model = Product
     success_url = reverse_lazy('online_store:products')
+    permission_required = 'online_store.delete_product'
 
 
 # FBV (function based views)
@@ -187,7 +201,7 @@ class ProductDeleteView(DeleteView):
 #
 #     return render(request, 'online_store/product_form.html')
 
-
+@login_required
 def base_test(request):
     """Для тестов"""
     title = 'OnlineStore'
