@@ -51,14 +51,16 @@ class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     paginate_by = 4
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Популярные продукты'
+        # context['version'] = self.object_list.subject_set.all().filter(version_flag=True)
 
         queryset = super().get_queryset()
         for product in queryset:
-            version = product.productversion_set.all().filter(version_flag=True).first()
+            version = product.productversion_set.all().filter(version_flag=True)
             context['version'] = version
+            print(context['version'])
 
         return context
 
@@ -120,9 +122,10 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        if self.object.user != self.request.user:
+        if self.object.user == self.request.user or self.object.user.is_staff == True:
+            return self.object
+        else:
             raise Http404
-        return self.object
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -146,7 +149,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin,  DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """Контроллер страницы удаления продукта"""
     model = Product
     success_url = reverse_lazy('online_store:products')
