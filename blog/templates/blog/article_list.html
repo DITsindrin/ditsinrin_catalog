@@ -3,18 +3,10 @@
 <div class="col-md-12">
     <div class="menu-container text-center">
         <ul class="menu">
-            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-503">
-                <a href="#" aria-current="page">Главная</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-17502"><a
-                    href="#">Гаджеты</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-17505"><a
-                    href="#">Игры</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-17503"><a
-                    href="#">Сериалы</a></li>
-            <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-17504"><a
-                    href="#">Фильмы</a></li>
-            <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-504"><a
-                    href="#">Магазин</a></li>
+            {% for category in category_list %}
+                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-503">
+                    <a href="#" aria-current="page">{{ category.title }}</a></li>
+            {% endfor %}
         </ul>
     </div>
 </div>
