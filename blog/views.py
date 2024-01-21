@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 from blog.models import Article
+from blog.services import get_category_article_cache
 
 
 # Create your views here.
@@ -14,10 +15,13 @@ from blog.models import Article
 class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
     paginate_by = 8
+    category_list_cache = get_category_article_cache()
 
     def get_context_data(self, *, object_list=None, **kwargs) -> dict[str,]:
         context = super().get_context_data(**kwargs)
         context['title'] = 'OnlineStore NewS'
+        context['category_list'] = self.category_list_cache
+
         return context
 
     def get_queryset(self):

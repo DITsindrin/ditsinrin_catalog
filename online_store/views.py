@@ -58,7 +58,7 @@ class ProductListView(LoginRequiredMixin, ListView):
 
         queryset = super().get_queryset()
         for product in queryset:
-            version = product.productversion_set.all().filter(version_flag=True)
+            version = product.productversion_set.filter(version_flag=True)
             context['version'] = version
             print(context['version'])
 
